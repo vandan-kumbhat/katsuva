@@ -34,6 +34,7 @@ public class Katsuva {
     public static void lexicalAnalysis(String line)
     {
         System.out.println(line);
+        System.out.println("hello");
         
     }
     
