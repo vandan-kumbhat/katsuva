@@ -1,7 +1,4 @@
-
 package katsuva;
-
-
 import java.io.*;
 import java.util.*;
 
@@ -17,9 +14,6 @@ class Identifier{
        scope=0;
        type=null;
    }
-   
-   
-   
 }
 
 public class Katsuva {
@@ -38,24 +32,24 @@ public class Katsuva {
     
     
     public static void main(String[] args) throws Exception {
-        
         initialize();
-        
         String base = "..\\katsuva\\src\\katsuva\\";
         String fileName = "input.txt"; // to be changed to command line input from user
         fileName = base + fileName;
         line_number=-1;
-        
         Scanner sc = new Scanner(new File(fileName));
         while (sc.hasNextLine()) {
           lexicalAnalysis(sc.nextLine());
-          
         }
         if(!(from_.isEmpty()))
            ;// from without end_from
         if(!(if_.isEmpty()))
            ;// if without end_if
-        
+        System.out.println(user_variables.toString());
+        System.out.println(from_endfrom.toString());
+        System.out.println(if_endif.toString());
+        System.out.println(continue_.toString());
+        System.out.println(break_.toString());
     }
     public static void initialize()   // initializing the pre defined variables
     {
@@ -68,17 +62,16 @@ public class Katsuva {
         pre_defined.add("break");
         pre_defined.add("to");
         pre_defined.add("inc_by");
-        pre_defined.add("Write");
-        
-        
-        
-        
+        pre_defined.add("write");
+        pre_defined.add("else");
+        pre_defined.add("in");
     }
     public static void lexicalAnalysis(String line)
     { line_number++;
         if(line.equals(""))
             return;
           String[] lexeme=line.split(" ");
+          lexeme[0]=lexeme[0].toString();
           if(lexeme[0].equals("if"))
           {
               scope++;
@@ -105,8 +98,7 @@ public class Katsuva {
               catch(Exception e)
               {
                  // end_from without from  
-              }
-              
+              } 
           }
           if(lexeme[0].equals("continue"))
           {
@@ -129,11 +121,17 @@ public class Katsuva {
           int i;
           for(i=0;i<lexeme.length;i++)
           {
-              
-          }
-          
-        System.out.println(line);
-        
-    }
-    
+              try{Integer.parseInt(lexeme[i]);}
+              catch(Exception e)
+              {
+                 if(!pre_defined.contains(lexeme[i]))  
+                  {
+                     Identifier temp=new Identifier();
+                     temp.scope=scope;                
+                     user_variables.put(lexeme[i],temp);
+                 }
+             }    
+          }   
+        System.out.println(line);  
+    }  
 }
